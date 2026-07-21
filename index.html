@@ -277,7 +277,7 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.5s ease;
-      z-index: 100;
+      z-index: 9999;
     }
 
     .controls.show { opacity: 1; pointer-events: auto; }
@@ -292,6 +292,25 @@
       border-radius: 30px;
       cursor: pointer;
       box-shadow: 0 4px 15px rgba(26,54,93,0.3);
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .controls button:hover { background-color: #d4af37; transform: translateY(-2px); }
+
+    .audio-control {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 45px;
+      height: 45px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      cursor: pointer;
+      z-index: 9999;
       transition: transform 0.2s, background 0.2s;
     }
 
@@ -362,8 +381,9 @@
         width: 100%;
         max-width: 95vw; 
         aspect-ratio: auto; /* Remove fixed aspect ratio for mobile */
-        min-height: 80vh; /* Give it enough height to hold content */
-        margin-top: 10vh;
+        height: 75vh;
+        height: 75dvh; /* Uses dynamic viewport height so mobile nav bars don't cause layout jumps */
+        margin-top: 0;
       }
 
       /* On mobile, adjust the fly-in animation to account for the new centering */
@@ -374,14 +394,15 @@
       }
 
       .letter { 
-        position: relative; /* Change from absolute to relative for scrolling if needed */
-        top: auto; left: auto;
-        width: 100%; 
-        height: 100%;
+        position: absolute;
+        top: 2%; left: 2%;
+        width: 96%; 
+        height: 96%;
         flex-direction: column; 
         justify-content: flex-start; 
-        padding: 20px 15px; 
-        overflow-y: auto; /* Allow scrolling within the letter if content overflows */
+        padding: 20px 15px 50px 15px; /* Extra bottom padding added for smooth scrolling */
+        overflow-y: auto; /* Allow scrolling within the letter */
+        -webkit-overflow-scrolling: touch; /* Essential for smooth scrolling on iOS */
       }
 
       /* Adjust letter pull out animation for mobile layout */
@@ -390,7 +411,7 @@
         40% { transform: translateY(-105%) scale(1); z-index: 2; }
         41% { z-index: 10; }
         /* Move it down slightly less on mobile so it doesn't get cut off at the bottom */
-        100% { transform: translateY(5%) scale(1.02); z-index: 10; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        100% { transform: translateY(8%) scale(1.02); z-index: 10; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
       }
 
       .letter-content { 
@@ -431,19 +452,23 @@
         width: 100%; 
         height: auto; 
         margin-top: 10px; 
-        padding-bottom: 20px; /* Add padding at the bottom of the letter */
+        padding-bottom: 40px; /* Space to scroll entirely past the bottom images */
       }
       
       .heart-collage { 
         max-width: 250px; /* slightly larger collage on mobile */
         margin: 0 auto;
       }
+      
+      /* Move the controls UP so they are visible above mobile browser toolbars */
+      .controls { bottom: 90px; }
+      .audio-control { bottom: 90px; right: 20px; }
     }
 
     /* Additional adjustments for very small screens (e.g., iPhone SE) */
     @media (max-width: 380px) {
-       .envelope-wrapper { min-height: 85vh; }
-       .letter { padding: 15px 10px; }
+       .envelope-wrapper { height: 75vh; height: 75dvh; }
+       .letter { padding: 15px 10px 40px 10px; }
        .countdown-mini { padding: 8px 10px; gap: 8px; }
        .time-block span { font-size: 1rem; }
     }
@@ -511,7 +536,7 @@
   </div>
 
   <!-- Background audio (place the uploaded MP3 at assets/paulyudin-romantic-romantic-music-493488.mp3) -->
-  <audio id="bg-audio" src="assets/paulyudin-romantic-romantic-music-493488.mp3" loop preload="auto" autoplay></audio>
+  <audio id="bg-audio" src="assets/music.mp3" loop preload="auto" autoplay></audio>
 
   <div id="audio-hint" class="audio-hint">Tap anywhere to enable music</div>
 
