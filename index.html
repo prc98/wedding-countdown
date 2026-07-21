@@ -414,6 +414,19 @@
         100% { transform: translateY(8%) scale(1.02); z-index: 10; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
       }
 
+      .letter { 
+        position: absolute;
+        top: 2%; left: 2%;
+        width: 96%; 
+        height: 96%;
+        flex-direction: column; 
+        justify-content: flex-start; 
+        /* INCREASED BOTTOM PADDING: Gives space to scroll the heart above the fixed buttons */
+        padding: 20px 15px 150px 15px; 
+        overflow-y: auto; 
+        -webkit-overflow-scrolling: touch; 
+      }
+
       .letter-content { 
         padding-right: 0; 
         margin-bottom: 20px; 
@@ -452,7 +465,7 @@
         width: 100%; 
         height: auto; 
         margin-top: 10px; 
-        padding-bottom: 40px; /* Space to scroll entirely past the bottom images */
+        padding-bottom: 10px; 
       }
       
       .heart-collage { 
@@ -461,8 +474,8 @@
       }
       
       /* Move the controls UP so they are visible above mobile browser toolbars */
-      .controls { bottom: 90px; }
-      .audio-control { bottom: 90px; right: 20px; }
+      .controls { bottom: 90px; z-index: 10000; }
+      .audio-control { bottom: 90px; right: 20px; z-index: 10000; }
     }
 
     /* Additional adjustments for very small screens (e.g., iPhone SE) */
@@ -612,17 +625,17 @@
             await bgAudio.play(); 
             if (audioHint) audioHint.style.display = 'none';
             updateAudioUI();
-          } catch(e) { /* still blocked */ }
-          
-          // Cleanup listeners once triggered
-          ['click', 'touchstart', 'keydown', 'scroll', 'wheel'].forEach(evt => 
-            window.removeEventListener(evt, startOnInteraction, { capture: true })
-          );
+            
+            // Cleanup listeners ONLY once audio successfully triggers
+            ['click', 'touchstart', 'touchend', 'keydown'].forEach(evt => 
+              window.removeEventListener(evt, startOnInteraction, { capture: true })
+            );
+          } catch(e) { /* still blocked, keep listening */ }
         };
         
-        // Listen to interactions to unlock audio
-        ['click', 'touchstart', 'keydown', 'scroll', 'wheel'].forEach(evt => 
-          window.addEventListener(evt, startOnInteraction, { once: true, capture: true, passive: true })
+        // Listen exclusively to intentful taps/clicks to unlock audio
+        ['click', 'touchstart', 'touchend', 'keydown'].forEach(evt => 
+          window.addEventListener(evt, startOnInteraction, { capture: true, passive: true })
         );
       }
     }
@@ -674,8 +687,17 @@
       
       // Force DOM reflow to reset animations
       envelope.classList.remove('animate');
-      void envelope.offsetWidth; 
-      envelope.classList.add('animate');
+      
+      // Reset scroll position of the letter for mobile users
+      const letter = document.querySelector('.letter');
+      if (letter) letter.scrollTop = 0;
+
+      // Use requestAnimationFrame to ensure mobile browsers register the reset
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          envelope.classList.add('animate');
+        });
+      });
       
       setTimeout(() => {
         controls.classList.add('show');
