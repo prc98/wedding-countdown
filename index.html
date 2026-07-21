@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Save The Date - Priyanka & Kunal</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -24,7 +25,7 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      perspective: 1000px;
+      perspective: 1200px;
     }
 
     .scene {
@@ -36,87 +37,94 @@
       align-items: center;
     }
 
+    /* Responsive horizontal envelope */
     .envelope-wrapper {
       position: relative;
-      width: 280px;
-      height: 380px; /* Vertical orientation */
-      transform: translate(-100vw, 100vh) rotate(-25deg) scale(0.3);
+      width: 90vw;
+      max-width: 800px;
+      aspect-ratio: 16 / 10; /* Ensures perfect horizontal proportions */
+      transform: translate(-100vw, 100vh) rotate(-20deg) scale(0.3);
       opacity: 0;
+      transform-style: preserve-3d;
     }
 
     .envelope-wrapper.animate {
-      animation: flyIn 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      animation: flyIn 1.5s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
     }
 
     @keyframes flyIn {
-      0% { transform: translate(-100vw, 100vh) rotate(-25deg) scale(0.3); opacity: 0; }
+      0% { transform: translate(-100vw, 100vh) rotate(-20deg) scale(0.3); opacity: 0; }
       50% { opacity: 1; }
-      100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; } 
     }
 
-    .envelope {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      background: #e8d8c3;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-      border-radius: 4px;
-    }
-
-    .pocket {
+    .envelope-base {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border-left: 140px solid #ebd9c5;
-      border-right: 140px solid #ebd9c5;
-      border-bottom: 210px solid #e3ccb2; /* Bottom triangle */
-      border-top: 170px solid transparent; 
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: #dfcdb7; /* Inner back color */
+      border-radius: 8px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      z-index: 1;
+    }
+
+    /* Side flaps overlap to create depth */
+    .flap-left {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: #ebd9c5;
+      clip-path: polygon(0 0, 0 100%, 46% 50%);
       z-index: 3;
+      border-radius: 8px;
     }
 
-    .flap {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border-left: 140px solid transparent;
-      border-right: 140px solid transparent;
-      border-top: 200px solid #d4bfa5;
-      transform-origin: top;
+    .flap-right {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: #ebd9c5;
+      clip-path: polygon(100% 0, 100% 100%, 54% 50%);
+      z-index: 3;
+      border-radius: 8px;
+    }
+
+    .flap-bottom {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: #e3ccb2;
+      clip-path: polygon(0 100%, 100% 100%, 50% 46%);
       z-index: 4;
-      drop-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      filter: drop-shadow(0 -3px 5px rgba(0,0,0,0.03));
     }
 
-    .envelope-wrapper.animate .flap {
-      animation: openFlap 1s ease-in-out 1.5s forwards;
+    .flap-top {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: #d4bfa5;
+      clip-path: polygon(0 0, 100% 0, 50% 55%);
+      transform-origin: top;
+      z-index: 5;
+      border-radius: 8px;
+    }
+
+    .envelope-wrapper.animate .flap-top {
+      animation: openFlap 1.2s ease-in-out 1.5s forwards;
     }
 
     @keyframes openFlap {
-      0% { transform: rotateX(0deg); z-index: 4; }
-      50% { z-index: 1; }
-      100% { transform: rotateX(180deg); z-index: 1; }
+      0% { transform: rotateX(0deg); z-index: 5; }
+      49% { z-index: 5; }
+      50% { z-index: 0; } /* Drops behind the letter once folded back */
+      100% { transform: rotateX(180deg); z-index: 0; }
     }
 
     .letter {
       position: absolute;
-      bottom: 10px;
-      left: 5%;
-      width: 90%;
-      height: 360px; /* Tall card for portrait mode */
+      top: 3%; left: 2.5%;
+      width: 95%; height: 94%; /* Fits perfectly inside */
       background: #ffffff;
-      border-radius: 8px;
-      z-index: 2; /* Starts inside envelope */
+      border-radius: 6px;
+      z-index: 2; /* Sandwiched between back and front flaps */
       display: flex;
-      flex-direction: column;
-      justify-content: center;
+      flex-direction: row;
+      justify-content: space-between;
       align-items: center;
-      text-align: center;
-      padding: 20px 15px;
+      padding: 30px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       border: 1px solid #f0f0f0;
     }
@@ -124,52 +132,115 @@
     .letter::before {
       content: '';
       position: absolute;
-      top: 8px; bottom: 8px; left: 8px; right: 8px;
-      border: 1px solid rgba(212, 175, 55, 0.4); /* Gold inner border */
+      top: 10px; bottom: 10px; left: 10px; right: 10px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
       pointer-events: none;
       border-radius: 4px;
     }
 
     .envelope-wrapper.animate .letter {
-      animation: pullOutLetter 2.2s ease-in-out 2.5s forwards;
+      animation: pullOutLetter 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) 2.5s forwards;
     }
 
     @keyframes pullOutLetter {
       0% { transform: translateY(0) scale(1); z-index: 2; }
-      40% { transform: translateY(-390px) scale(1); z-index: 2; } /* Pull completely out */
-      45% { z-index: 5; } /* Pop to front layer */
-      100% { transform: translateY(-70px) scale(1.1); z-index: 5; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+      40% { transform: translateY(-105%) scale(1); z-index: 2; } /* Slide way up */
+      41% { z-index: 10; } /* Pop to very front */
+      100% { transform: translateY(15%) scale(1.05); z-index: 10; box-shadow: 0 25px 50px rgba(0,0,0,0.2); } /* Rest in front */
+    }
+
+    .letter-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-right: 20px;
+      z-index: 12;
     }
 
     .letter h1 {
       font-family: 'Playfair Display', serif;
       font-style: italic;
       color: #d4af37;
-      font-size: 1.3rem;
-      margin-bottom: 2px;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      margin-bottom: 5px;
       letter-spacing: 1px;
     }
 
     .letter h2 {
       font-family: 'Playfair Display', serif;
       color: #1a365d;
-      font-size: 1.4rem;
+      font-size: clamp(1.4rem, 4vw, 2.5rem);
       font-weight: 700;
       margin-bottom: 15px;
       white-space: nowrap;
     }
 
-    .heart-wrapper {
+    .date-text {
+      font-family: 'Playfair Display', serif;
+      color: #1a365d;
+      font-size: clamp(0.9rem, 2vw, 1.3rem);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .venue-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: 'Montserrat', sans-serif;
+      color: #334e68;
+      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .venue-text svg {
+      width: 16px;
+      height: 16px;
+      stroke: #d4af37;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .letter-decor {
+      margin-bottom: 15px;
+      width: 80px;
+      opacity: 0.7;
+    }
+
+    .countdown-mini {
       display: flex;
       justify-content: center;
-      margin-bottom: 15px;
-      width: 100%;
+      gap: 15px;
+      background: #fdfaf6;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid #eee5d8;
+    }
+
+    .time-block { display: flex; flex-direction: column; align-items: center; }
+    .time-block span { font-family: 'Playfair Display', serif; color: #1a365d; font-size: 1.3rem; font-weight: 700; line-height: 1; }
+    .time-block small { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-top: 3px; }
+
+    .heart-wrapper {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
     }
 
     .heart-collage {
       position: relative;
-      width: 150px;
-      height: 150px;
+      width: 100%;
+      max-width: 300px;
+      aspect-ratio: 1 / 1;
     }
 
     .heart-collage img {
@@ -177,11 +248,14 @@
       object-fit: cover;
       background-color: #f0f0f0;
       border: 2px solid #ffffff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      border-radius: 2px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: 4px;
+      transition: transform 0.3s ease;
     }
 
-    /* 10-Cell Grid Logic for the specific layout */
+    .heart-collage img:hover { transform: scale(1.1); z-index: 20; }
+
+    /* Precise Heart Geometry */
     .heart-collage img:nth-child(1) { top: 15%; left: 10%; width: 25%; height: 25%; }
     .heart-collage img:nth-child(2) { top: 25%; left: 38%; width: 12%; height: 12%; }
     .heart-collage img:nth-child(3) { top: 25%; left: 53%; width: 12%; height: 12%; }
@@ -195,86 +269,77 @@
     .heart-collage img:nth-child(9) { top: 71%; left: 65%; width: 15%; height: 15%; }
     .heart-collage img:nth-child(10) { top: 78%; left: 42%; width: 15%; height: 15%; }
 
-    .letter p.date-text {
-      font-family: 'Playfair Display', serif;
-      color: #1a365d;
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 5px;
-    }
-
-    .letter-decor {
-      margin-bottom: 8px;
-      width: 40px;
-      opacity: 0.6;
-    }
-
-    .countdown-mini {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-    }
-
-    .time-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .time-block span {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #d4af37; /* Gold numbers */
-      line-height: 1.1;
-    }
-
-    .time-block small {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.45rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #666;
-      margin-top: 2px;
-    }
-
     .controls {
       position: fixed;
-      bottom: 40px;
-      z-index: 10;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
       opacity: 0;
+      pointer-events: none;
       transition: opacity 0.5s ease;
+      z-index: 100;
     }
 
-    .controls.show {
-      opacity: 1;
-    }
+    .controls.show { opacity: 1; pointer-events: auto; }
 
-    button {
-      background: #1a365d;
-      color: white;
-      border: none;
+    .controls button {
       padding: 12px 24px;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.9rem;
-      font-weight: 500;
+      background-color: #1a365d;
+      color: white;
+      border: none;
       border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(26, 54, 93, 0.3);
-      transition: background 0.3s, transform 0.2s;
+      box-shadow: 0 4px 15px rgba(26,54,93,0.3);
+      transition: transform 0.2s, background 0.2s;
     }
 
-    button:hover {
-      background: #d4af37;
-      transform: translateY(-2px);
+    .controls button:hover { background-color: #d4af37; transform: translateY(-2px); }
+
+    .audio-control {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 45px;
+      height: 45px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      cursor: pointer;
+      z-index: 100;
+      transition: transform 0.2s, background 0.2s;
     }
 
-    @media (max-width: 500px) {
+    .audio-control:hover {
+      transform: scale(1.1);
+      background-color: #fdfaf6;
+    }
+
+    .audio-control svg {
+      width: 20px;
+      height: 20px;
+      fill: #1a365d;
+    }
+
+    /* Mobile Adaptations */
+    @media (max-width: 768px) {
+      .envelope-wrapper { max-width: 95vw; aspect-ratio: 16 / 12; }
+      .letter { flex-direction: column; justify-content: center; padding: 15px; }
+      .letter-content { padding-right: 0; margin-bottom: 10px; flex: none; }
+      .heart-wrapper { flex: none; width: 100%; height: auto; margin-top: 5px; }
+      .heart-collage { max-width: 200px; }
+      .countdown-mini { gap: 10px; padding: 8px 12px; }
+      .time-block span { font-size: 1.1rem; }
+      
       @keyframes pullOutLetter {
         0% { transform: translateY(0) scale(1); z-index: 2; }
-        40% { transform: translateY(-390px) scale(1); z-index: 2; }
-        45% { z-index: 5; }
-        100% { transform: translateY(-40px) scale(1.05); z-index: 5; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        40% { transform: translateY(-105%) scale(1); z-index: 2; }
+        41% { z-index: 10; }
+        100% { transform: translateY(8%) scale(1.02); z-index: 10; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
       }
     }
   </style>
@@ -283,33 +348,27 @@
 
   <div class="scene">
     <div class="envelope-wrapper" id="envelope">
-      <div class="envelope">
-        <div class="flap"></div>
-        <div class="pocket"></div>
-        
-        <div class="letter">
+      <div class="envelope-base"></div>
+      <div class="flap-left"></div>
+      <div class="flap-right"></div>
+      <div class="flap-bottom"></div>
+      <div class="flap-top"></div>
+      
+      <div class="letter">
+        <div class="letter-content">
           <h1>Save the Date</h1>
-          <h2>Priyanka & Kunal</h2>
           
-          <div class="heart-wrapper">
-            <div class="heart-collage">
-              <!-- 10 Unique photos to form the cell-based heart -->
-              <img src="assets/top/top_photo_1.jpg" alt="Photo 1">
-              <img src="assets/top/top_photo_2.jpg" alt="Photo 2">
-              <img src="assets/top/top_photo_3.jpg" alt="Photo 3">
-              <img src="assets/top/top_photo_4.jpg" alt="Photo 4">
-              
-              <img src="assets/top/top_photo_5.jpg" alt="Photo 5">
-              <img src="assets/top/top_photo_6.jpg" alt="Center Highlight">
-              <img src="assets/top/top_photo_7.jpg" alt="Photo 7">
-              
-              <img src="assets/top/top_photo_8.jpg" alt="Photo 8">
-              <img src="assets/top/top_photo_9.jpg" alt="Photo 9">
-              <img src="assets/top/top_photo_10.jpg" alt="Photo 10">
-            </div>
-          </div>
-
           <p class="date-text">November 25th, 2026</p>
+          
+          <h2>Priyanka & Kunal</h2>
+
+          <div class="venue-text">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            Chowdhury House, Ballygunge, Kolkata
+          </div>
           
           <!-- Elegant divider SVG -->
           <svg class="letter-decor" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg">
@@ -320,26 +379,29 @@
 
           <!-- Live Countdown Timer -->
           <div class="countdown-mini" id="countdown-timer">
-            <div class="time-block">
-              <span id="c-days">00</span>
-              <small>Days</small>
-            </div>
-            <div class="time-block">
-              <span id="c-hours">00</span>
-              <small>Hrs</small>
-            </div>
-            <div class="time-block">
-              <span id="c-mins">00</span>
-              <small>Min</small>
-            </div>
-            <div class="time-block">
-              <span id="c-secs">00</span>
-              <small>Sec</small>
-            </div>
+            <div class="time-block"><span id="c-days">00</span><small>Days</small></div>
+            <div class="time-block"><span id="c-hours">00</span><small>Hrs</small></div>
+            <div class="time-block"><span id="c-mins">00</span><small>Min</small></div>
+            <div class="time-block"><span id="c-secs">00</span><small>Sec</small></div>
           </div>
         </div>
         
+        <div class="heart-wrapper">
+          <div class="heart-collage">
+            <img src="assets/top/top_photo_1.jpg" alt="Photo 1">
+            <img src="assets/top/top_photo_2.jpg" alt="Photo 2">
+            <img src="assets/top/top_photo_3.jpg" alt="Photo 3">
+            <img src="assets/top/top_photo_4.jpg" alt="Photo 4">
+            <img src="assets/top/top_photo_5.jpg" alt="Photo 5">
+            <img src="assets/top/top_photo_6.jpg" alt="Photo 6">
+            <img src="assets/top/top_photo_7.jpg" alt="Photo 7">
+            <img src="assets/top/top_photo_8.jpg" alt="Photo 8">
+            <img src="assets/top/top_photo_9.jpg" alt="Photo 9">
+            <img src="assets/top/top_photo_10.jpg" alt="Photo 10">
+          </div>
+        </div>
       </div>
+      
     </div>
   </div>
 
@@ -351,7 +413,7 @@
     const envelope = document.getElementById('envelope');
     const controls = document.getElementById('controls');
 
-    // Updated date logic for November 25, 2026
+    // Wedding Date Logic
     const weddingDate = new Date("2026-11-25T00:00:00").getTime();
 
     function updateCountdown() {
@@ -359,7 +421,7 @@
       const distance = weddingDate - now;
 
       if (distance < 0) {
-        document.getElementById("countdown-timer").innerHTML = "<div style='font-family: Playfair Display; color: #d4af37; font-weight: bold; font-size: 1rem; margin-top: 5px;'>It's the Big Day!</div>";
+        document.getElementById("countdown-timer").innerHTML = "<div style='color: #d4af37; font-weight: bold; font-size: 1.2rem;'>The Big Day!</div>";
         return;
       }
 
@@ -377,23 +439,23 @@
         envelope.classList.add('animate');
       }, 500);
 
-      // Show replay button after sequence finishes (~4.7s)
+      // Show replay button after sequence finishes
       setTimeout(() => {
         controls.classList.add('show');
-      }, 5200);
+      }, 5000);
     };
 
     function replayAnimation() {
       controls.classList.remove('show');
       
-      // Reset animations
+      // Force DOM reflow to reset animations
       envelope.classList.remove('animate');
       void envelope.offsetWidth; 
       envelope.classList.add('animate');
       
       setTimeout(() => {
         controls.classList.add('show');
-      }, 5200);
+      }, 5000);
     }
   </script>
 </body>
