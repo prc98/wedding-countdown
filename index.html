@@ -327,36 +327,125 @@
 
     .audio-hint {
       position: fixed;
+      top: 40px;
       left: 50%;
-      top: 20px;
       transform: translateX(-50%);
-      background: rgba(26,54,93,0.95);
-      color: white;
-      padding: 8px 14px;
-      border-radius: 20px;
+      background-color: rgba(26, 54, 93, 0.95);
+      color: #fdfaf6;
+      padding: 10px 20px;
+      border-radius: 30px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.95rem;
-      z-index: 200;
-      display: none;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      z-index: 1000;
+      pointer-events: none; /* Allows clicks to pass through to the page */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      display: none; /* Hidden by default, JavaScript shows it if blocked */
+      animation: pulseHint 2s infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes pulseHint {
+      0% { transform: translateX(-50%) scale(1); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); }
+      50% { transform: translateX(-50%) scale(1.05); box-shadow: 0 6px 25px rgba(212, 175, 55, 0.4); }
+      100% { transform: translateX(-50%) scale(1); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); }
     }
 
     /* Mobile Adaptations */
     @media (max-width: 768px) {
-      .envelope-wrapper { max-width: 95vw; aspect-ratio: 16 / 12; }
-      .letter { flex-direction: column; justify-content: center; padding: 15px; }
-      .letter-content { padding-right: 0; margin-bottom: 10px; flex: none; }
-      .heart-wrapper { flex: none; width: 100%; height: auto; margin-top: 5px; }
-      .heart-collage { max-width: 200px; }
-      .countdown-mini { gap: 10px; padding: 8px 12px; }
-      .time-block span { font-size: 1.1rem; }
-      
+      .scene {
+        padding: 20px;
+        align-items: center; /* Center vertically on smaller screens */
+      }
+
+      .envelope-wrapper { 
+        width: 100%;
+        max-width: 95vw; 
+        aspect-ratio: auto; /* Remove fixed aspect ratio for mobile */
+        min-height: 80vh; /* Give it enough height to hold content */
+        margin-top: 10vh;
+      }
+
+      /* On mobile, adjust the fly-in animation to account for the new centering */
+      @keyframes flyIn {
+        0% { transform: translate(-100vw, 100vh) rotate(-20deg) scale(0.3); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; } 
+      }
+
+      .letter { 
+        position: relative; /* Change from absolute to relative for scrolling if needed */
+        top: auto; left: auto;
+        width: 100%; 
+        height: 100%;
+        flex-direction: column; 
+        justify-content: flex-start; 
+        padding: 20px 15px; 
+        overflow-y: auto; /* Allow scrolling within the letter if content overflows */
+      }
+
+      /* Adjust letter pull out animation for mobile layout */
       @keyframes pullOutLetter {
         0% { transform: translateY(0) scale(1); z-index: 2; }
         40% { transform: translateY(-105%) scale(1); z-index: 2; }
         41% { z-index: 10; }
-        100% { transform: translateY(8%) scale(1.02); z-index: 10; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        /* Move it down slightly less on mobile so it doesn't get cut off at the bottom */
+        100% { transform: translateY(5%) scale(1.02); z-index: 10; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
       }
+
+      .letter-content { 
+        padding-right: 0; 
+        margin-bottom: 20px; 
+        flex: none; 
+        width: 100%;
+      }
+
+      .letter h1 {
+        font-size: clamp(1.8rem, 8vw, 2.2rem);
+      }
+
+      .letter h2 {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+        white-space: normal; /* Allow names to wrap on very small screens */
+      }
+
+      .date-text {
+        font-size: clamp(1.1rem, 4vw, 1.3rem);
+      }
+
+      .venue-text {
+        font-size: clamp(0.85rem, 3vw, 1rem);
+        flex-wrap: wrap; /* Allow venue icon and text to wrap */
+      }
+
+      .countdown-mini { 
+        gap: 10px; 
+        padding: 10px 15px; 
+        width: 100%; /* Make countdown take full width */
+      }
+      
+      .time-block span { font-size: 1.2rem; }
+
+      .heart-wrapper { 
+        flex: none; 
+        width: 100%; 
+        height: auto; 
+        margin-top: 10px; 
+        padding-bottom: 20px; /* Add padding at the bottom of the letter */
+      }
+      
+      .heart-collage { 
+        max-width: 250px; /* slightly larger collage on mobile */
+        margin: 0 auto;
+      }
+    }
+
+    /* Additional adjustments for very small screens (e.g., iPhone SE) */
+    @media (max-width: 380px) {
+       .envelope-wrapper { min-height: 85vh; }
+       .letter { padding: 15px 10px; }
+       .countdown-mini { padding: 8px 10px; gap: 8px; }
+       .time-block span { font-size: 1rem; }
     }
   </style>
 </head>
@@ -422,7 +511,7 @@
   </div>
 
   <!-- Background audio (place the uploaded MP3 at assets/paulyudin-romantic-romantic-music-493488.mp3) -->
-  <audio id="bg-audio" src="assets/paulyudin-romantic-romantic-music-493488.mp3" loop preload="auto"></audio>
+  <audio id="bg-audio" src="assets/paulyudin-romantic-romantic-music-493488.mp3" loop preload="auto" autoplay></audio>
 
   <div id="audio-hint" class="audio-hint">Tap anywhere to enable music</div>
 
@@ -441,6 +530,10 @@
   <script>
     const envelope = document.getElementById('envelope');
     const controls = document.getElementById('controls');
+    const bgAudio = document.getElementById('bg-audio');
+    const audioHint = document.getElementById('audio-hint');
+    const audioControl = document.getElementById('audio-control');
+    const audioIcon = document.getElementById('audio-icon');
 
     // Wedding Date Logic
     const weddingDate = new Date("2026-11-25T00:00:00").getTime();
@@ -463,7 +556,75 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
+    if (bgAudio) bgAudio.volume = 0.95;
+
+    function updateAudioUI() {
+      if (!audioControl || !bgAudio) return;
+      if (bgAudio.paused) {
+        audioControl.title = 'Play music';
+        audioIcon.innerHTML = '<path d="M12 5v14l-6-4H3V9h3l6-4z"></path><path d="M16 8a4 4 0 0 1 0 8"></path><path d="M16 4a8 8 0 0 1 0 16"></path>';
+      } else {
+        audioControl.title = 'Pause music';
+        audioIcon.innerHTML = '<path d="M8 6h3v12H8z"></path><path d="M13 6h3v12h-3z"></path>';
+      }
+    }
+
+    async function playAudioOnLoad() {
+      if (!bgAudio) return;
+      try {
+        await bgAudio.play();
+        // Playback succeeded immediately
+        if (audioHint) audioHint.style.display = 'none';
+        if (audioControl) audioControl.style.display = 'flex';
+        updateAudioUI();
+      } catch (err) {
+        // Autoplay blocked - wait for ANY user gesture to unlock
+        if (audioHint) audioHint.style.display = 'block';
+        if (audioControl) audioControl.style.display = 'flex';
+
+        const startOnInteraction = async () => {
+          try { 
+            await bgAudio.play(); 
+            if (audioHint) audioHint.style.display = 'none';
+            updateAudioUI();
+          } catch(e) { /* still blocked */ }
+          
+          // Cleanup listeners once triggered
+          ['click', 'touchstart', 'keydown', 'scroll', 'wheel'].forEach(evt => 
+            window.removeEventListener(evt, startOnInteraction, { capture: true })
+          );
+        };
+        
+        // Listen to interactions to unlock audio
+        ['click', 'touchstart', 'keydown', 'scroll', 'wheel'].forEach(evt => 
+          window.addEventListener(evt, startOnInteraction, { once: true, capture: true, passive: true })
+        );
+      }
+    }
+
+    // Wire manual control button
+    if (audioControl) {
+      audioControl.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        if (bgAudio.paused) {
+          try { await bgAudio.play(); } catch(e) { /* ignore */ }
+        } else {
+          bgAudio.pause();
+        }
+        updateAudioUI();
+      });
+    }
+
+    if (bgAudio) {
+      bgAudio.addEventListener('play', updateAudioUI);
+      bgAudio.addEventListener('pause', updateAudioUI);
+    }
+
+    // Attempt to play background audio as early as possible (while site is still loading images)
+    playAudioOnLoad();
+
     window.onload = () => {
+      // Trigger envelope animation slightly after load completes
       setTimeout(() => {
         envelope.classList.add('animate');
       }, 500);
@@ -473,6 +634,13 @@
         controls.classList.add('show');
       }, 5000);
     };
+
+    // Try again when page becomes visible (e.g. if switching tabs)
+    document.addEventListener('visibilitychange', () => { 
+      if (document.visibilityState === 'visible' && bgAudio && bgAudio.paused) {
+        playAudioOnLoad();
+      } 
+    });
 
     function replayAnimation() {
       controls.classList.remove('show');
@@ -486,71 +654,6 @@
         controls.classList.add('show');
       }, 5000);
     }
-
-    // Background audio autoplay handling + visible play/pause control
-    (function() {
-      const bgAudio = document.getElementById('bg-audio');
-      const audioHint = document.getElementById('audio-hint');
-      const audioControl = document.getElementById('audio-control');
-      const audioIcon = document.getElementById('audio-icon');
-      if (!bgAudio) return;
-      bgAudio.volume = 0.95;
-
-      function updateAudioUI() {
-        if (!audioControl) return;
-        if (bgAudio.paused) {
-          audioControl.title = 'Play music';
-          audioIcon.innerHTML = '<path d="M12 5v14l-6-4H3V9h3l6-4z"></path><path d="M16 8a4 4 0 0 1 0 8"></path><path d="M16 4a8 8 0 0 1 0 16"></path>';
-        } else {
-          audioControl.title = 'Pause music';
-          audioIcon.innerHTML = '<path d="M8 6h3v12H8z"></path><path d="M13 6h3v12h-3z"></path>';
-        }
-      }
-
-      async function tryPlay() {
-        try {
-          await bgAudio.play();
-          // succeeded
-          if (audioHint) audioHint.style.display = 'none';
-          if (audioControl) audioControl.style.display = 'flex';
-          updateAudioUI();
-        } catch (err) {
-          // Autoplay blocked - show hint and wait for user gesture
-          if (audioHint) audioHint.style.display = 'block';
-          if (audioControl) audioControl.style.display = 'flex';
-
-          const startOnInteraction = async () => {
-            try { await bgAudio.play(); } catch(e) { /* still blocked */ }
-            if (audioHint) audioHint.style.display = 'none';
-            updateAudioUI();
-            window.removeEventListener('click', startOnInteraction);
-            window.removeEventListener('touchstart', startOnInteraction);
-          };
-          window.addEventListener('click', startOnInteraction, { once: true });
-          window.addEventListener('touchstart', startOnInteraction, { once: true });
-        }
-      }
-
-      // wire manual control button
-      if (audioControl) {
-        audioControl.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          if (bgAudio.paused) {
-            try { await bgAudio.play(); } catch(e) { /* ignore */ }
-          } else {
-            bgAudio.pause();
-          }
-          updateAudioUI();
-        });
-      }
-
-      // Try on load, and again when page becomes visible
-      window.addEventListener('load', () => { setTimeout(tryPlay, 300); });
-      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') tryPlay(); });
-      // keep UI in sync if user pauses via other means
-      bgAudio.addEventListener('play', updateAudioUI);
-      bgAudio.addEventListener('pause', updateAudioUI);
-    })();
   </script>
 </body>
 </html>
