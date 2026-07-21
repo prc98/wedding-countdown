@@ -325,6 +325,22 @@
       fill: #1a365d;
     }
 
+    .audio-hint {
+      position: fixed;
+      left: 50%;
+      top: 20px;
+      transform: translateX(-50%);
+      background: rgba(26,54,93,0.95);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      z-index: 200;
+      display: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
     /* Mobile Adaptations */
     @media (max-width: 768px) {
       .envelope-wrapper { max-width: 95vw; aspect-ratio: 16 / 12; }
@@ -405,6 +421,19 @@
     </div>
   </div>
 
+  <!-- Background audio (place the uploaded MP3 at assets/paulyudin-romantic-romantic-music-493488.mp3) -->
+  <audio id="bg-audio" src="assets/paulyudin-romantic-romantic-music-493488.mp3" loop preload="auto"></audio>
+
+  <div id="audio-hint" class="audio-hint">Tap anywhere to enable music</div>
+
+  <button class="audio-control" id="audio-control" aria-label="Toggle music" title="Toggle music" style="display:none;">
+    <svg id="audio-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 5v14l-6-4H3V9h3l6-4z"></path>
+      <path d="M16 8a4 4 0 0 1 0 8"></path>
+      <path d="M16 4a8 8 0 0 1 0 16"></path>
+    </svg>
+  </button>
+
   <div class="controls" id="controls">
     <button onclick="replayAnimation()">Watch Again</button>
   </div>
@@ -457,6 +486,71 @@
         controls.classList.add('show');
       }, 5000);
     }
+
+    // Background audio autoplay handling + visible play/pause control
+    (function() {
+      const bgAudio = document.getElementById('bg-audio');
+      const audioHint = document.getElementById('audio-hint');
+      const audioControl = document.getElementById('audio-control');
+      const audioIcon = document.getElementById('audio-icon');
+      if (!bgAudio) return;
+      bgAudio.volume = 0.95;
+
+      function updateAudioUI() {
+        if (!audioControl) return;
+        if (bgAudio.paused) {
+          audioControl.title = 'Play music';
+          audioIcon.innerHTML = '<path d="M12 5v14l-6-4H3V9h3l6-4z"></path><path d="M16 8a4 4 0 0 1 0 8"></path><path d="M16 4a8 8 0 0 1 0 16"></path>';
+        } else {
+          audioControl.title = 'Pause music';
+          audioIcon.innerHTML = '<path d="M8 6h3v12H8z"></path><path d="M13 6h3v12h-3z"></path>';
+        }
+      }
+
+      async function tryPlay() {
+        try {
+          await bgAudio.play();
+          // succeeded
+          if (audioHint) audioHint.style.display = 'none';
+          if (audioControl) audioControl.style.display = 'flex';
+          updateAudioUI();
+        } catch (err) {
+          // Autoplay blocked - show hint and wait for user gesture
+          if (audioHint) audioHint.style.display = 'block';
+          if (audioControl) audioControl.style.display = 'flex';
+
+          const startOnInteraction = async () => {
+            try { await bgAudio.play(); } catch(e) { /* still blocked */ }
+            if (audioHint) audioHint.style.display = 'none';
+            updateAudioUI();
+            window.removeEventListener('click', startOnInteraction);
+            window.removeEventListener('touchstart', startOnInteraction);
+          };
+          window.addEventListener('click', startOnInteraction, { once: true });
+          window.addEventListener('touchstart', startOnInteraction, { once: true });
+        }
+      }
+
+      // wire manual control button
+      if (audioControl) {
+        audioControl.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          if (bgAudio.paused) {
+            try { await bgAudio.play(); } catch(e) { /* ignore */ }
+          } else {
+            bgAudio.pause();
+          }
+          updateAudioUI();
+        });
+      }
+
+      // Try on load, and again when page becomes visible
+      window.addEventListener('load', () => { setTimeout(tryPlay, 300); });
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') tryPlay(); });
+      // keep UI in sync if user pauses via other means
+      bgAudio.addEventListener('play', updateAudioUI);
+      bgAudio.addEventListener('pause', updateAudioUI);
+    })();
   </script>
 </body>
 </html>
