@@ -3,175 +3,398 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Save The Date - Kunal & & & Priyanka</title>
+  <title>Save The Date - Priyanka & Kunal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(circle at center, #fdfcfb 0%, #e2d1c3 100%);
       min-height: 100vh;
-      background-color: #fdfcfb;
-      background-image: radial-gradient(#e5e5e5 1px, transparent 1px);
-      background-size: 20px 20px;
-      color: #1a365d;
-      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      perspective: 1000px;
     }
-    
-    .floral-corner { position: absolute; width: 180px; height: 180px; opacity: 0.15; z-index: -1; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q40,20 50,50 T90,90 M10,50 Q30,40 50,50 T90,50 M50,10 Q40,30 50,50 T50,90' fill='none' stroke='%231a365d' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M20,20 C30,10 40,30 20,40 Z M80,80 C70,90 60,70 80,60 Z' fill='none' stroke='%231a365d' stroke-width='1'/%3E%3C/svg%3E"); background-size: contain; background-repeat: no-repeat; }
-    .floral-tl { top: -20px; left: -20px; transform: rotate(0deg); }
-    .floral-tr { top: -20px; right: -20px; transform: rotate(90deg); }
-    .floral-bl { bottom: -20px; left: -20px; transform: rotate(-90deg); }
-    .floral-br { bottom: -20px; right: -20px; transform: rotate(180deg); }
 
-    .main-content { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; text-align: center; position: relative; z-index: 1; }
-    
-    .sub-title { font-family: 'Playfair Display', serif; font-size: 4.5rem; font-weight: 600; font-style: italic; color: #d4af37; margin-bottom: 25px; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
-    
-    .names-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 15px; width: 100%; max-width: 600px; }
-    .names-line { height: 1px; background-color: #1a365d; flex-grow: 1; position: relative; max-width: 80px; }
-    .names-line::after { content: ''; position: absolute; width: 5px; height: 5px; background-color: #1a365d; transform: rotate(45deg); top: -2px; }
-    .names-line.left::after { right: -5px; }
-    .names-line.right::after { left: -5px; }
-    
-    .names { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: #1a365d; line-height: 1.2; }
-    .date { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: #1a365d; background: rgba(212, 175, 55, 0.12); border: 1px solid rgba(212, 175, 55, 0.35); padding: 14px 22px; border-radius: 999px; letter-spacing: 0.08em; text-transform: none; margin-bottom: 18px; position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 8px 20px rgba(26, 54, 93, 0.08); }
-    .date::before, .date::after { content: '•'; color: #d4af37; font-size: 1.2rem; position: relative; top: 1px; }
-    .venue { font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; color: #1a365d; margin-bottom: 36px; opacity: 0.95; display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; background: rgba(26, 54, 93, 0.06); border-radius: 999px; border: 1px solid rgba(26, 54, 93, 0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.7); }
-    .venue::before { content: '📍'; font-size: 1rem; }
+    .scene {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-    /* Heart Cell Mosaic */
-    .heart-wrapper { display: flex; justify-content: center; margin-bottom: 40px; width: 100%; }
-    .heart-collage { position: relative; width: 320px; height: 320px; }
-    .heart-collage img { position: absolute; object-fit: cover; background-color: #eee; }
-    
-    .heart-collage img:nth-child(6) { top: 15%; left: 10%; width: 25%; height: 25%; z-index: 1; border: none; }
+    .envelope-wrapper {
+      position: relative;
+      width: 280px;
+      height: 380px; /* Vertical orientation */
+      transform: translate(-100vw, 100vh) rotate(-25deg) scale(0.3);
+      opacity: 0;
+    }
+
+    .envelope-wrapper.animate {
+      animation: flyIn 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes flyIn {
+      0% { transform: translate(-100vw, 100vh) rotate(-25deg) scale(0.3); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+    }
+
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #e8d8c3;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      border-radius: 4px;
+    }
+
+    .pocket {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 140px solid #ebd9c5;
+      border-right: 140px solid #ebd9c5;
+      border-bottom: 210px solid #e3ccb2; /* Bottom triangle */
+      border-top: 170px solid transparent; 
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      z-index: 3;
+    }
+
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 140px solid transparent;
+      border-right: 140px solid transparent;
+      border-top: 200px solid #d4bfa5;
+      transform-origin: top;
+      z-index: 4;
+      drop-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .envelope-wrapper.animate .flap {
+      animation: openFlap 1s ease-in-out 1.5s forwards;
+    }
+
+    @keyframes openFlap {
+      0% { transform: rotateX(0deg); z-index: 4; }
+      50% { z-index: 1; }
+      100% { transform: rotateX(180deg); z-index: 1; }
+    }
+
+    .letter {
+      position: absolute;
+      bottom: 10px;
+      left: 5%;
+      width: 90%;
+      height: 360px; /* Tall card for portrait mode */
+      background: #ffffff;
+      border-radius: 8px;
+      z-index: 2; /* Starts inside envelope */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border: 1px solid #f0f0f0;
+    }
+
+    .letter::before {
+      content: '';
+      position: absolute;
+      top: 8px; bottom: 8px; left: 8px; right: 8px;
+      border: 1px solid rgba(212, 175, 55, 0.4); /* Gold inner border */
+      pointer-events: none;
+      border-radius: 4px;
+    }
+
+    .envelope-wrapper.animate .letter {
+      animation: pullOutLetter 2.2s ease-in-out 2.5s forwards;
+    }
+
+    @keyframes pullOutLetter {
+      0% { transform: translateY(0) scale(1); z-index: 2; }
+      40% { transform: translateY(-390px) scale(1); z-index: 2; } /* Pull completely out */
+      45% { z-index: 5; } /* Pop to front layer */
+      100% { transform: translateY(-70px) scale(1.1); z-index: 5; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+    }
+
+    .letter h1 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: #d4af37;
+      font-size: 1.3rem;
+      margin-bottom: 2px;
+      letter-spacing: 1px;
+    }
+
+    .letter h2 {
+      font-family: 'Playfair Display', serif;
+      color: #1a365d;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      white-space: nowrap;
+    }
+
+    .heart-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+      width: 100%;
+    }
+
+    .heart-collage {
+      position: relative;
+      width: 150px;
+      height: 150px;
+    }
+
+    .heart-collage img {
+      position: absolute;
+      object-fit: cover;
+      background-color: #f0f0f0;
+      border: 2px solid #ffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-radius: 2px;
+    }
+
+    /* 10-Cell Grid Logic for the specific layout */
+    .heart-collage img:nth-child(1) { top: 15%; left: 10%; width: 25%; height: 25%; }
     .heart-collage img:nth-child(2) { top: 25%; left: 38%; width: 12%; height: 12%; }
     .heart-collage img:nth-child(3) { top: 25%; left: 53%; width: 12%; height: 12%; }
-    .heart-collage img:nth-child(4) { top: 15%; left: 68%; width: 22%; height: 25%; }
+    .heart-collage img:nth-child(4) { top: 15%; left: 68%; width: 25%; height: 25%; }
     
     .heart-collage img:nth-child(5) { top: 43%; left: 5%; width: 25%; height: 25%; }
-    .heart-collage img:nth-child(1) { top: 40%; left: 33%; width: 35%; height: 35%; z-index: 2; border: 3px solid #fdfcfb; }
+    .heart-collage img:nth-child(6) { top: 40%; left: 33%; width: 35%; height: 35%; z-index: 2; border-width: 3px; } /* Large Center */
     .heart-collage img:nth-child(7) { top: 43%; left: 71%; width: 25%; height: 25%; }
     
     .heart-collage img:nth-child(8) { top: 71%; left: 20%; width: 15%; height: 15%; }
     .heart-collage img:nth-child(9) { top: 71%; left: 65%; width: 15%; height: 15%; }
     .heart-collage img:nth-child(10) { top: 78%; left: 42%; width: 15%; height: 15%; }
 
-    /* Starry Countdown */
-    .countdown-container { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%); border-radius: 12px; padding: 25px 40px; position: relative; box-shadow: 0 15px 30px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.1); overflow: hidden; margin-top: 10px; margin-bottom: 40px; }
-    .countdown-container::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)), radial-gradient(1.5px 1.5px at 100px 50px, #ffffff, rgba(0,0,0,0)), radial-gradient(1px 1px at 200px 20px, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 300px 70px, #d4af37, rgba(0,0,0,0)), radial-gradient(1px 1px at 50px 80px, #ffffff, rgba(0,0,0,0)); opacity: 0.5; z-index: 1; }
-    .timer-corner { position: absolute; width: 25px; height: 25px; border: 2px solid #d4af37; z-index: 2; opacity: 0.8; }
-    .tc-tl { top: 8px; left: 8px; border-right: none; border-bottom: none; border-top-left-radius: 6px; }
-    .tc-tr { top: 8px; right: 8px; border-left: none; border-bottom: none; border-top-right-radius: 6px; }
-    .tc-bl { bottom: 8px; left: 8px; border-right: none; border-top: none; border-bottom-left-radius: 6px; }
-    .tc-br { bottom: 8px; right: 8px; border-left: none; border-top: none; border-bottom-right-radius: 6px; }
+    .letter p.date-text {
+      font-family: 'Playfair Display', serif;
+      color: #1a365d;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
 
-    .countdown { display: flex; justify-content: center; align-items: center; gap: 15px; position: relative; z-index: 3; }
-    .time-box { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
-    .number { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400; line-height: 1; color: #d4af37; text-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
-    .colon { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 400; color: #d4af37; transform: translateY(-12px); }
-    .label { font-family: 'Montserrat', sans-serif; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; color: #93a5be; }
+    .letter-decor {
+      margin-bottom: 8px;
+      width: 40px;
+      opacity: 0.6;
+    }
 
-    /* Music & Gallery */
-    .music-player { margin-top: 20px; background: rgba(255,255,255,0.8); padding: 10px 20px; border-radius: 30px; border: 1px solid rgba(0,0,0,0.05); }
-    .music-player audio { height: 30px; outline: none; }
-    
-    .gallery-container { width: 100%; max-width: 1000px; margin: 60px auto 40px auto; padding: 0 20px; }
-    .gallery-container h2 { font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; margin-bottom: 30px; border-bottom: 1px solid rgba(26,54,93,0.2); padding-bottom: 15px; display: inline-block; color: #1a365d; }
-    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-    .gallery-grid img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; transition: transform 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    .gallery-grid img:hover { transform: scale(1.03); }
+    .countdown-mini {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .time-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .time-block span {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #d4af37; /* Gold numbers */
+      line-height: 1.1;
+    }
+
+    .time-block small {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .controls {
+      position: fixed;
+      bottom: 40px;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .controls.show {
+      opacity: 1;
+    }
+
+    button {
+      background: #1a365d;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(26, 54, 93, 0.3);
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #d4af37;
+      transform: translateY(-2px);
+    }
 
     @media (max-width: 500px) {
-      .sub-title { font-size: 2.8rem; }
-      .names { font-size: 1.8rem; }
-      .heart-collage { width: 280px; height: 250px; }
-      .countdown-container { padding: 20px; }
-      .number { font-size: 1.8rem; }
-      .colon { font-size: 1.5rem; transform: translateY(-8px); }
+      @keyframes pullOutLetter {
+        0% { transform: translateY(0) scale(1); z-index: 2; }
+        40% { transform: translateY(-390px) scale(1); z-index: 2; }
+        45% { z-index: 5; }
+        100% { transform: translateY(-40px) scale(1.05); z-index: 5; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="floral-corner floral-tl"></div>
-  <div class="floral-corner floral-tr"></div>
-  <div class="floral-corner floral-bl"></div>
-  <div class="floral-corner floral-br"></div>
+  <div class="scene">
+    <div class="envelope-wrapper" id="envelope">
+      <div class="envelope">
+        <div class="flap"></div>
+        <div class="pocket"></div>
+        
+        <div class="letter">
+          <h1>Save the Date</h1>
+          <h2>Priyanka & Kunal</h2>
+          
+          <div class="heart-wrapper">
+            <div class="heart-collage">
+              <!-- 10 Unique photos to form the cell-based heart -->
+              <img src="assets/top/top_photo_1.jpg" alt="Photo 1">
+              <img src="assets/top/top_photo_2.jpg" alt="Photo 2">
+              <img src="assets/top/top_photo_3.jpg" alt="Photo 3">
+              <img src="assets/top/top_photo_4.jpg" alt="Photo 4">
+              
+              <img src="assets/top/top_photo_5.jpg" alt="Photo 5">
+              <img src="assets/top/top_photo_6.jpg" alt="Center Highlight">
+              <img src="assets/top/top_photo_7.jpg" alt="Photo 7">
+              
+              <img src="assets/top/top_photo_8.jpg" alt="Photo 8">
+              <img src="assets/top/top_photo_9.jpg" alt="Photo 9">
+              <img src="assets/top/top_photo_10.jpg" alt="Photo 10">
+            </div>
+          </div>
 
-  <div class="main-content">
-      
-      <h1 class="sub-title">Save the Date</h1>
-      
-      <p class="date">25th November 2026</p>
+          <p class="date-text">November 25th, 2026</p>
+          
+          <!-- Elegant divider SVG -->
+          <svg class="letter-decor" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="10" x2="35" y2="10" stroke="#d4af37" stroke-width="1"/>
+            <circle cx="50" cy="10" r="3" fill="#d4af37"/>
+            <line x1="65" y1="10" x2="100" y2="10" stroke="#d4af37" stroke-width="1"/>
+          </svg>
 
-      <div class="names-container">
-        <div class="names-line left"></div>
-        <h2 class="names">Kunal<br>&<br>Priyanka</h2>
-        <div class="names-line right"></div>
-      </div>
-
-      <p class="venue">Venue: Chowdhury House, Ballygunge, Kolkata</p>
-
-        <div class="heart-wrapper">
-          <div class="heart-collage">
-            <img src="assets/top/top_photo_1.jpg" alt="Memory 1">
-<img src="assets/top/top_photo_2.jpg" alt="Memory 2">
-<img src="assets/top/top_photo_3.jpg" alt="Memory 3">
-<img src="assets/top/top_photo_4.jpg" alt="Memory 4">
-<img src="assets/top/top_photo_5.jpg" alt="Memory 5">
-<img src="assets/top/top_photo_6.jpg" alt="Memory 6">
-<img src="assets/top/top_photo_7.jpg" alt="Memory 7">
-<img src="assets/top/top_photo_8.jpg" alt="Memory 8">
-<img src="assets/top/top_photo_9.jpg" alt="Memory 9">
-<img src="assets/top/top_photo_10.jpg" alt="Memory 10">
-
+          <!-- Live Countdown Timer -->
+          <div class="countdown-mini" id="countdown-timer">
+            <div class="time-block">
+              <span id="c-days">00</span>
+              <small>Days</small>
+            </div>
+            <div class="time-block">
+              <span id="c-hours">00</span>
+              <small>Hrs</small>
+            </div>
+            <div class="time-block">
+              <span id="c-mins">00</span>
+              <small>Min</small>
+            </div>
+            <div class="time-block">
+              <span id="c-secs">00</span>
+              <small>Sec</small>
+            </div>
           </div>
         </div>
-
-      <div class="countdown-container" id="countdown-wrapper">
-        <div class="timer-corner tc-tl"></div>
-        <div class="timer-corner tc-tr"></div>
-        <div class="timer-corner tc-bl"></div>
-        <div class="timer-corner tc-br"></div>
-
-        <div class="countdown" id="countdown-container">
-          <div class="time-box"><span class="number" id="days">00</span><span class="label">Days</span></div>
-          <span class="colon">:</span>
-          <div class="time-box"><span class="number" id="hours">00</span><span class="label">Hours</span></div>
-          <span class="colon">:</span>
-          <div class="time-box"><span class="number" id="minutes">00</span><span class="label">Minutes</span></div>
-          <span class="colon">:</span>
-          <div class="time-box"><span class="number" id="seconds">00</span><span class="label">Seconds</span></div>
-        </div>
+        
       </div>
+    </div>
+  </div>
 
-    
-    
+  <div class="controls" id="controls">
+    <button onclick="replayAnimation()">Watch Again</button>
   </div>
 
   <script>
-    const weddingDate = new Date("2026-11-25T18:30").getTime();
+    const envelope = document.getElementById('envelope');
+    const controls = document.getElementById('controls');
 
-    const updateCountdown = () => {
+    // Updated date logic for November 25, 2026
+    const weddingDate = new Date("2026-11-25T00:00:00").getTime();
+
+    function updateCountdown() {
       const now = new Date().getTime();
-      const dist = weddingDate - now;
+      const distance = weddingDate - now;
 
-      if (dist < 0) {
-        document.getElementById("countdown-wrapper").innerHTML = "<h2 style='font-family: Playfair Display; font-size: 2rem; font-style: italic; color: #d4af37; text-align: center;'>The Big Day is Here!</h2>";
+      if (distance < 0) {
+        document.getElementById("countdown-timer").innerHTML = "<div style='font-family: Playfair Display; color: #d4af37; font-weight: bold; font-size: 1rem; margin-top: 5px;'>It's the Big Day!</div>";
         return;
       }
 
-      document.getElementById("days").innerText = Math.floor(dist / (1000 * 60 * 60 * 24)).toString();
-      document.getElementById("hours").innerText = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-      document.getElementById("minutes").innerText = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-      document.getElementById("seconds").innerText = Math.floor((dist % (1000 * 60)) / 1000).toString().padStart(2, '0');
-    };
+      document.getElementById("c-days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+      document.getElementById("c-hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+      document.getElementById("c-mins").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+      document.getElementById("c-secs").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+    }
 
     setInterval(updateCountdown, 1000);
     updateCountdown();
+
+    window.onload = () => {
+      setTimeout(() => {
+        envelope.classList.add('animate');
+      }, 500);
+
+      // Show replay button after sequence finishes (~4.7s)
+      setTimeout(() => {
+        controls.classList.add('show');
+      }, 5200);
+    };
+
+    function replayAnimation() {
+      controls.classList.remove('show');
+      
+      // Reset animations
+      envelope.classList.remove('animate');
+      void envelope.offsetWidth; 
+      envelope.classList.add('animate');
+      
+      setTimeout(() => {
+        controls.classList.add('show');
+      }, 5200);
+    }
   </script>
 </body>
 </html>
