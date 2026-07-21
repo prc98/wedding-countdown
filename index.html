@@ -269,34 +269,6 @@
     .heart-collage img:nth-child(9) { top: 71%; left: 65%; width: 15%; height: 15%; }
     .heart-collage img:nth-child(10) { top: 78%; left: 42%; width: 15%; height: 15%; }
 
-    .controls {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
-      z-index: 9999;
-    }
-
-    .controls.show { opacity: 1; pointer-events: auto; }
-
-    .controls button {
-      padding: 12px 24px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.9rem;
-      background-color: #1a365d;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(26,54,93,0.3);
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .controls button:hover { background-color: #d4af37; transform: translateY(-2px); }
-
     .audio-control {
       position: fixed;
       bottom: 30px;
@@ -313,8 +285,6 @@
       z-index: 9999;
       transition: transform 0.2s, background 0.2s;
     }
-
-    .controls button:hover { background-color: #d4af37; transform: translateY(-2px); }
 
     .audio-control {
       position: fixed;
@@ -473,8 +443,6 @@
         margin: 0 auto;
       }
       
-      /* Move the controls UP so they are visible above mobile browser toolbars */
-      .controls { bottom: 90px; z-index: 10000; }
       .audio-control { bottom: 90px; right: 20px; z-index: 10000; }
     }
 
@@ -561,13 +529,8 @@
     </svg>
   </button>
 
-  <div class="controls" id="controls">
-    <button onclick="replayAnimation()">Watch Again</button>
-  </div>
-
   <script>
     const envelope = document.getElementById('envelope');
-    const controls = document.getElementById('controls');
     const bgAudio = document.getElementById('bg-audio');
     const audioHint = document.getElementById('audio-hint');
     const audioControl = document.getElementById('audio-control');
@@ -668,11 +631,6 @@
       setTimeout(() => {
         envelope.classList.add('animate');
       }, 300);
-
-      // Show replay button after sequence finishes
-      setTimeout(() => {
-        controls.classList.add('show');
-      }, 5000);
     });
 
     // Try again when page becomes visible (e.g. if switching tabs)
@@ -681,28 +639,6 @@
         playAudioOnLoad();
       } 
     });
-
-    function replayAnimation() {
-      controls.classList.remove('show');
-      
-      // Force DOM reflow to reset animations
-      envelope.classList.remove('animate');
-      
-      // Reset scroll position of the letter for mobile users
-      const letter = document.querySelector('.letter');
-      if (letter) letter.scrollTop = 0;
-
-      // Use requestAnimationFrame to ensure mobile browsers register the reset
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          envelope.classList.add('animate');
-        });
-      });
-      
-      setTimeout(() => {
-        controls.classList.add('show');
-      }, 5000);
-    }
   </script>
 </body>
 </html>
