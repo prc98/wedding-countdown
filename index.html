@@ -493,16 +493,16 @@
         
         <div class="heart-wrapper">
           <div class="heart-collage">
-            <img src="assets/top/top_photo_1.jpg" alt="Photo 1">
-            <img src="assets/top/top_photo_2.jpg" alt="Photo 2">
-            <img src="assets/top/top_photo_3.jpg" alt="Photo 3">
-            <img src="assets/top/top_photo_4.jpg" alt="Photo 4">
-            <img src="assets/top/top_photo_5.jpg" alt="Photo 5">
-            <img src="assets/top/top_photo_6.jpg" alt="Photo 6">
-            <img src="assets/top/top_photo_7.jpg" alt="Photo 7">
-            <img src="assets/top/top_photo_8.jpg" alt="Photo 8">
-            <img src="assets/top/top_photo_9.jpg" alt="Photo 9">
-            <img src="assets/top/top_photo_10.jpg" alt="Photo 10">
+            <img src="assets/top/top_photo_1.jpg" alt="Photo 1" loading="lazy" decoding="async">
+            <img src="assets/top/top_photo_2.jpg" alt="Photo 2" loading="lazy" decoding="async">
+            <img src="assets/top/top_photo_3.jpg" alt="Photo 3" loading="lazy" decoding="async">
+            <img src="assets/top/top_photo_4.jpg" alt="Photo 4" loading="lazy" decoding="async">
+            <img src="assets/top/top_photo_5.jpg" alt="Photo 5" loading="lazy" decoding="async">
+            <img src="assets/top/top_photo_6.jpg" alt="Photo 6" loading="lazy" decoding="async">
+            <img src="assets/top/top_photo_7.jpg" alt="Photo 7" loading="lazy" decoding="async">
+            <img src="assets/top/top_photo_8.jpg" alt="Photo 8" loading="lazy" decoding="async">
+            <img src="assets/top/top_photo_9.jpg" alt="Photo 9" loading="lazy" decoding="async">
+            <img src="assets/top/top_photo_10.jpg" alt="Photo 10" loading="lazy" decoding="async">
           </div>
         </div>
       </div>
@@ -623,17 +623,19 @@
     // Attempt to play background audio as early as possible (while site is still loading images)
     playAudioOnLoad();
 
-    window.onload = () => {
-      // Trigger envelope animation slightly after load completes
+    // Listen for DOMContentLoaded instead of window.onload so the animation 
+    // doesn't wait for heavy images/audio files to finish downloading first
+    document.addEventListener('DOMContentLoaded', () => {
+      // Trigger envelope animation rapidly after HTML structure is ready
       setTimeout(() => {
         envelope.classList.add('animate');
-      }, 500);
+      }, 300);
 
       // Show replay button after sequence finishes
       setTimeout(() => {
         controls.classList.add('show');
       }, 5000);
-    };
+    });
 
     // Try again when page becomes visible (e.g. if switching tabs)
     document.addEventListener('visibilitychange', () => { 
